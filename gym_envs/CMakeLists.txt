@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(gym_construct)
+project(gym_envs)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -106,7 +106,7 @@ file(GLOB python_scripts_DIR
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES gym_construct
+#  LIBRARIES gym_envs
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
@@ -123,24 +123,24 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(gym_construct
-#   src/${PROJECT_NAME}/gym_construct.cpp
+# add_library(gym_envs
+#   src/${PROJECT_NAME}/gym_envs.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(gym_construct ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(gym_envs ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(gym_construct_node src/gym_construct_node.cpp)
+# add_executable(gym_envs_node src/gym_envs_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(gym_construct_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(gym_envs_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(gym_construct_node
+# target_link_libraries(gym_envs_node
 #   ${catkin_LIBRARIES}
 # )
 
@@ -159,7 +159,7 @@ include_directories(
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS gym_construct gym_construct_node
+# install(TARGETS gym_envs gym_envs_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -204,7 +204,7 @@ catkin_install_python(PROGRAMS ${python_scripts_DIR}
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_gym_construct.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_gym_envs.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

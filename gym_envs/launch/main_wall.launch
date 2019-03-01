@@ -13,7 +13,7 @@
     <arg name="use_sim_time" value="true"/>
     <arg name="debug" value="false"/>
     <arg name="gui" value="$(arg gui)" />
-    <arg name="world_name" value="$(find gym_construct)/worlds/empty_wall.world"/>
+    <arg name="world_name" value="$(find gym_envs)/worlds/empty_wall.world"/>
   </include>
   
   <include file="$(find turtlebot_gazebo)/launch/includes/$(arg base).launch.xml">
