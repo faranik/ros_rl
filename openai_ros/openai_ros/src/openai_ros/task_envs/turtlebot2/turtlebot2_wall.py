@@ -16,8 +16,8 @@ register(
 class TurtleBot2WallEnv(turtlebot2_env.TurtleBot2Env):
     def __init__(self):
         """
-        This Task Env is designed for having the TurtleBot2 in some kind of maze.
-        It will learn how to move around the maze without crashing.
+        This Task Env is designed for having the TurtleBot2 in face of a wall.
+        It will learn how to move around the wall without crashing.
         """
         
         # Only variable needed to be set here
@@ -79,7 +79,7 @@ class TurtleBot2WallEnv(turtlebot2_env.TurtleBot2Env):
 
         self.cumulated_steps = 0.0
 
-        # Here we will add any init functions prior to starting the MyRobotEnv
+        # Here we will add any init functions prior to starting the RobotEnvironment
         super(TurtleBot2WallEnv, self).__init__()
 
     def _set_init_pose(self):
@@ -101,6 +101,7 @@ class TurtleBot2WallEnv(turtlebot2_env.TurtleBot2Env):
         """
         # For Info Purposes
         self.cumulated_reward = 0.0
+
         # Set to false Done, because its calculated asyncronously
         self._episode_done = False
         
@@ -112,11 +113,10 @@ class TurtleBot2WallEnv(turtlebot2_env.TurtleBot2Env):
         """
         This set action will Set the linear and angular speed of the turtlebot2
         based on the action number given.
-        :param action: The action integer that set s what movement to do next.
+        :param action: The action integer that sets what movement to do next.
         """
         
-        rospy.logdebug("Start Set Action ==>"+str(action))
-        # We convert the actions to speed movements to send to the parent class CubeSingleDiskEnv
+        # We convert the actions to speed movements to send to the parent class TurtleBot2Env
         if action == 0: #FORWARD
             linear_speed = self.linear_forward_speed
             angular_speed = 0.0
@@ -130,11 +130,14 @@ class TurtleBot2WallEnv(turtlebot2_env.TurtleBot2Env):
             angular_speed = -1*self.angular_speed
             self.last_action = "TURN_RIGHT"
 
+        rospy.logdebug("Start Set Action ==> " + self.last_action)
+
         
         # We tell TurtleBot2 the linear and angular speed to set to execute
         self.move_base(linear_speed, angular_speed, epsilon=0.05, update_rate=10)
         
         rospy.logdebug("END Set Action ==>"+str(action))
+
 
     def _get_obs(self):
         """
@@ -147,25 +150,22 @@ class TurtleBot2WallEnv(turtlebot2_env.TurtleBot2Env):
         # We get the laser scan data
         laser_scan = self.get_laser_scan()
         
-        discretized_laser_scan = self.discretize_observation( laser_scan,
-                                                                self.new_ranges
-                                                                )
+        discretized_laser_scan = self.discretize_observation(laser_scan, self.new_ranges)
                                                                 
-                                                                
-        # We get the odometry so that SumitXL knows where it is.
+        # We get the odometry so that turtlebot knows where it is.
         odometry = self.get_odom()
         x_position = odometry.pose.pose.position.x
         y_position = odometry.pose.pose.position.y
 
         # We round to only two decimals to avoid very big Observation space
-        odometry_array = [round(x_position, 2),round(y_position, 2)]
+        odometry_array = [round(x_position, 2), round(y_position, 2)]
 
         # We only want the X and Y position and the Yaw
-
         observations = discretized_laser_scan + odometry_array
 
-        rospy.logdebug("Observations==>"+str(observations))
+        rospy.logdebug("Observations==>" + str(observations))
         rospy.logdebug("END Get Observation ==>")
+
         return observations
         
 
@@ -174,8 +174,7 @@ class TurtleBot2WallEnv(turtlebot2_env.TurtleBot2Env):
         if self._episode_done:
             rospy.logerr("TurtleBot2 is Too Close to wall==>")
         else:
-            rospy.logerr("TurtleBot2 didnt crash at least ==>")
-       
+            rospy.logerr("TurtleBot2 didnt crash at least ==>")       
        
             current_position = Point()
             current_position.x = observations[-2]
@@ -188,27 +187,22 @@ class TurtleBot2WallEnv(turtlebot2_env.TurtleBot2Env):
             MIN_Y = -3.0
             
             # We see if we are outside the Learning Space
-            
             if current_position.x <= MAX_X and current_position.x > MIN_X:
                 if current_position.y <= MAX_Y and current_position.y > MIN_Y:
-                    rospy.logdebug("TurtleBot Position is OK ==>["+str(current_position.x)+","+str(current_position.y)+"]")
+                    rospy.logdebug("TurtleBot Position is OK ==> [" + str(current_position.x) + "," + str(current_position.y) + "]")
                     
                     # We see if it got to the desired point
                     if self.is_in_desired_position(current_position):
                         self._episode_done = True
-                    
-                    
                 else:
-                    rospy.logerr("TurtleBot to Far in Y Pos ==>"+str(current_position.x))
+                    rospy.logerr("TurtleBot to Far in Y Pos ==> " + str(current_position.x))
                     self._episode_done = True
             else:
-                rospy.logerr("TurtleBot to Far in X Pos ==>"+str(current_position.x))
+                rospy.logerr("TurtleBot to Far in X Pos ==> " + str(current_position.x))
                 self._episode_done = True
             
-            
-            
-
         return self._episode_done
+
 
     def _compute_reward(self, observations, done):
 
@@ -243,21 +237,20 @@ class TurtleBot2WallEnv(turtlebot2_env.TurtleBot2Env):
             else:
                 reward = -1*self.end_episode_points
 
-
         self.previous_distance_from_des_point = distance_from_des_point
 
-
         rospy.logdebug("reward=" + str(reward))
+
         self.cumulated_reward += reward
         rospy.logdebug("Cumulated_reward=" + str(self.cumulated_reward))
+
         self.cumulated_steps += 1
         rospy.logdebug("Cumulated_steps=" + str(self.cumulated_steps))
         
         return reward
 
 
-    # Internal TaskEnv Methods
-    
+    # Internal TaskEnv Methods    
     def discretize_observation(self,data,new_ranges):
         """
         Discards all the laser readings that are not multiple in index of new_ranges

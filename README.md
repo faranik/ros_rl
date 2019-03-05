@@ -43,7 +43,12 @@ For the purpose of usability, all packages and files needed for this project are
     </node>
   </launch>
   ```
-  Observe how the line 16 specifies the world to be launched. Change it for your own world file. Line 15 specifies if to launch the user interface window of Gazebo (default value is true as you can see at line 6). Don't pay attention for now to lines 19 - 23. I'll come back to them when we will talk about how to add a robot to the environment. Save the launch file with a meaningful for you name.
+  Observe how the line 16 specifies the world to be launched. Change it for your own world file.
+  Line 15 specifies if to launch the user interface window of Gazebo (default value is true as you can see at line 6). 
+  Don't pay attention for now to lines 19 - 23. I'll come back to them when we will talk about how to add a robot to the environment. 
+  Save the launch file with a meaningful for you name.
+  For more details on how to create a launch file for gazebo en ros refer to [Gazebo : Tutorial : Using roslaunch](http://gazebosim.org/tutorials/?tut=ros_roslaunch)
+
 * Build, source and launch your new gym environment.
   ```
   $ cd ~/catkin_ws

@@ -128,7 +128,7 @@
     <model name='brick_box_3x1x3_left'>
       <static>1</static>
       <link name='chassis'>
-        <pose>-1 3 1.5 0 -0 0</pose>
+        <pose>-1 4 1.5 0 -0 0</pose>
         <collision name='collision'>
           <geometry>
             <box>
@@ -174,7 +174,7 @@
     <model name='brick_box_3x1x3_right'>
       <static>1</static>
       <link name='chassis'>
-        <pose>-1 -3 1.5 0 -0 0</pose>
+        <pose>-1 -4 1.5 0 -0 0</pose>
         <collision name='collision'>
           <geometry>
             <box>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <!-- This version uses the openai_ros environments -->
+    <rosparam command="load" file="$(find turtlebot_training)/config/turtlebot_wall_params.yaml" />
+
+    <!-- Launch the training system -->
+    <node pkg="turtlebot_training" name="turtlebot_wall_qlearn" type="start_training_wall.py" output="screen"/>
+
+</launch>
